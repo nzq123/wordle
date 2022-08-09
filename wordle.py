@@ -1,18 +1,12 @@
-#! 1. tablice ze slowami, taka sama dlugosc slowa (10) !
-#! 2. losowanie slowa z tablicy
-# 3. warunki gry: na start wyswietla sie 5 pustych kratek
-# 4. uzytkownik wpisuje litere, jesli ona jest na wlasciwym miejscu to ja pokazuje
-# 5. po 6 nietrafionych strzałach gracz odpada
+# 1. sprawdzic czy slowo jest w 5 letterwords
+# 2.wyswietlac poprawnie kolory czyli, jesli zielona litera jest juz pokazana to inna ta sama litera nie bedzie zolta
 
 
 import random
+from termcolor import colored
 
-words = ['AGENT', 'COACH', 'EARTH', 'WATER', 'FAIRY', 'GHOST', 'STEEL', 'GRASS', 'DRAKE', 'CLOCK']
-
-word = random.choice(words)
-
-
-print(word)
+with open("5letterwords.txt", "r") as f:
+    word = random.choice(f.readlines()).upper().strip()
 
 print("_____")
 
@@ -22,21 +16,25 @@ listed_words = '_____'
 
 num = 0
 
-while num < 6 and '_' in listed_words:
+while num < 6:
     x = input("Podaj słowo: ").upper()
+    if word == x:
+        print('Zgadłeś słowo!', end=" ")
+        print(colored(word, 'green'))
+        break
     for i in range(len(word)):
         if word[i] == x[i]:
-            temp = list(guess_word)
-            temp[i] = word[i]
-            listed_words = "".join(temp)
-            guess_word = listed_words
+            print(colored(word[i], 'green'), end=' ')
+        elif x[i] in word:
+            print(colored(x[i], 'yellow'), end=' ')
         else:
             listed_words = guess_word
+            print(colored(x[i], 'red'), end=' ')
     num += 1
+    print()
     print(f"Zostało prób: {6 - num}")
-    print(listed_words)
-
-if '_' in listed_words:
-    print('Przegrales')
-else:
-    print("Wygrales")
+    print('_____')
+    if num == 6:
+        print(colored('Przegrałeś', 'red'), end="")
+        print(', poprawne słowo to: ', end="")
+        print(colored(word, 'green'))
