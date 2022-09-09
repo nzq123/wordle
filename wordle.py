@@ -1,11 +1,22 @@
 import random
 from termcolor import colored
 
+language = input("Wybierz 'pl' albo 'eng': ").lower()
+
 
 def list_of_words():
-    with open("5letterwords.txt", "r") as f:
-        check_words = f.read().upper().splitlines()
-        return check_words
+    global language
+    while language not in ["pl", "eng"]:
+        language = input("Wybierz 'pl' albo 'eng': ").lower()
+    if language == 'eng':
+        with open("5letterwordseng.txt", "r") as f:
+            check_words = f.read().upper().splitlines()
+            return check_words
+    elif language == 'pl':
+        with open("5letterspl.txt", "r", encoding="utf-8") as f:
+            ch_words = f.read().upper().splitlines()
+            check_words = [letter for letter in ch_words if len(letter) == 5]
+            return check_words
 
 
 var_of_words = list_of_words()
@@ -13,9 +24,6 @@ var_of_words = list_of_words()
 word = random.choice(var_of_words).upper().strip()
 
 num = 0
-
-print(word)
-
 
 while num < 6:
     final_word = input("Podaj słowo 5 literowe: ").upper()
